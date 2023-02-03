@@ -3,20 +3,32 @@
 }
 body {
   background: #000428;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #004e92, #000428);  
-  background: linear-gradient(to right, #004e92, #000428); 
+  background: -webkit-linear-gradient(to right, #660505, #070707);  
+  background: linear-gradient(to right, #920000, #070707); 
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  border-top: 1rem solid #888888;
+}
+header, footer {
+  margin: 25px 0;
 }
 header {
-  margin: 30px 0;
+  min-height: 70vh;
+}
+.footer {
+  display: flex;
+  justify-content: center;
+  color: white;
+  bottom: 0;
+  margin-top: 2rem;
+  margin-bottom: -3rem;
 }
 .contenido {
   padding:20px;
 }
 .contenido-principal {
-  background-color: white;
+  background-color: rgb(185, 181, 181);
   padding: 30px;
   border-radius: 20px;
 }
@@ -35,14 +47,14 @@ h1 {
   font-weight: 100;
   color: white;
   text-align: center;
-  font-size: 4.8rem!important;
+  font-size: 2rem!important;
 }
 h2 {
   font-family: 'Raleway', sans-serif;
   font-weight: 100;
-  color:#004e92;
+  color:#000000;
   margin-bottom:30px;
-  font-size:3rem!important;
+  font-size:2.5rem!important;
   text-align: center;
 }
 .campo {
@@ -100,4 +112,7 @@ h2 {
   background-color: #004085;
   padding: 1rem;
   color:white;
+}
+#portfolio-link {
+  text-decoration: none;
 }

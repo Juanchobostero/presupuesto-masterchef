@@ -41,7 +41,7 @@ const Formulario = ({ setGasto, setCrearGasto }) => {
         <form
             onSubmit={addGasto}
         >
-            <h2>Agregá tus Gastos aquí</h2>
+            <h2>Agregá tus Gastos</h2>
 
             {error ? <Error msg="Ambos campos son obligatorios o Presupuesto incorrecto"/> : null}
 

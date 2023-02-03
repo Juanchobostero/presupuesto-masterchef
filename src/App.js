@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Formulario from "./components/Formulario";
 import Listado from "./components/Listado";
 import ControlPresupuesto from "./components/ControlPresupuesto";
+import Footer from "./components/Footer";
 
 
 function App() {
@@ -36,7 +37,7 @@ function App() {
   return (
     <div className="container">
       <header>
-        <h1>Gasto Semanal</h1>
+        <h1>Gasto Semanal - Master Chef</h1>
 
         <div className="contenido-principal contenido">
           {mostrarpregunta 
@@ -71,6 +72,9 @@ function App() {
           
         </div>
       </header>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }

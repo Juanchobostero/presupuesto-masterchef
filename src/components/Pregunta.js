@@ -32,7 +32,7 @@ const Pregunta = ({ setPresupuesto, setRestante, setMostrarPregunta }) => {
 
     return ( 
         <>
-            <h2>Coloca tu Presupuesto</h2>
+            <h2>Hola !, ingresá tu presupuesto para cargarlo al sistema</h2>
 
             {error ? <Error msg="El Presupuesto es incorrecto !"/> : null}
 
