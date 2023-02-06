@@ -3,6 +3,7 @@ import Formulario from "./components/Formulario";
 import Listado from "./components/Listado";
 import ControlPresupuesto from "./components/ControlPresupuesto";
 import Footer from "./components/Footer";
+import TransactionState from './context/transaction/transactionState';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
 
 
   return (
+    <TransactionState>
     <div className="container">
       <header>
         <h1>Gastos e Ingresos - Master Chef</h1>
@@ -58,6 +60,7 @@ function App() {
         <Footer />
       </footer>
     </div>
+    </TransactionState>
   );
 }
 

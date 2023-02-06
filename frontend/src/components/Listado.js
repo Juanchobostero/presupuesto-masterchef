@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from "prop-types";
+import { transactionContext } from '../context/transaction/transactionContext';
 
 const Listado = ({ transacciones }) => {
+
+    const transContext = useContext(transactionContext);
+    const { loading, transactions, error, getTransactions } = transContext;
+
+    useEffect(() => {
+        getTransactions();
+      console.log(transactions);
+    }, []);
+    
+
     return(
         <div className="gastos-realizados">
             <h2>Listado</h2>
@@ -15,12 +26,19 @@ const Listado = ({ transacciones }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {transacciones.map((transaccion) => (
-                        <tr key={transaccion.id}>
-                            <td>{transaccion.descripcion}</td>
-                            <td>{transaccion.monto}</td>
-                        </tr>
-                    ))}
+                    {/* { transactions.length > 0 
+                        ? (transactions.map((transaccion) => (
+                            <tr key={transaccion.id}>
+                                <td>{transaccion.descripcion}</td>
+                                <td>{transaccion.monto}</td>
+                            </tr>
+                        ))) 
+                        : (
+                            <h3>No data PUTO</h3>
+                        )
+
+                    } */}
+                    
                 </tbody>
             </table>
         </div>

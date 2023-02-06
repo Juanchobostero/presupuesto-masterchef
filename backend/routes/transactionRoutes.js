@@ -6,7 +6,9 @@ import {
     getTransactionById
 } from "../controllers/transactionController.js";
 
-router.route('/').post(registerTransaction).get(getTransactions);
+router.route('/')
+    .get(getTransactions)
+    .post(registerTransaction);
 router.route('/:id')
     .get(getTransactionById)
 
