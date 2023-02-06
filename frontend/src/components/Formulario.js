@@ -31,10 +31,10 @@ const Formulario = ({ setTransaccion, setCrearTransaccion }) => {
 
         //Construir la transacción
         const transaccion = {
-            descripcion,
+            id: shortid.generate(),
             tipo,
-            monto,
-            id: shortid.generate()
+            descripcion,
+            monto
         }
 
         //Pasar el gasto al componente principal

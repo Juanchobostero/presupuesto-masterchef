@@ -5,9 +5,9 @@ import Transaction from '../models/transactionModel.js';
 // @route POST /api/transactions
 // @access Public
 const registerTransaction = asyncHandler( async (req, res) => {
-    const { name, value, transactionType } = req.body;
+    const { description, amount, transactionType } = req.body;
 
-    const transactionExists = await Transaction.findOne({ name, value });
+    const transactionExists = await Transaction.findOne({ description, amount });
 
     if(transactionExists) {
         res.status(400);
@@ -15,16 +15,16 @@ const registerTransaction = asyncHandler( async (req, res) => {
     }
 
     const transaction = await Transaction.create({
-        name,
-        value,
-        transactionType
+        transactionType,
+        description,
+        amount
     });
 
     if(transaction) {
         res.status(201).json({
             _id: transaction._id,
-            name: transaction.period,
-            value: transaction.value,
+            description: transaction.description,
+            amount: transaction.amount,
             transactionType: transaction.transactionType
         });  
     } else {

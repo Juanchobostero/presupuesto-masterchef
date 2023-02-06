@@ -6,11 +6,11 @@ const transactionSchema = mongoose.Schema({
         required: true,
         ref: 'TransactionType'
     },
-    name: {
+    description: {
         type: String,
         required: true
     },
-    value: {
+    amount: {
         type: Number,
         required: true,
         default: 0.0

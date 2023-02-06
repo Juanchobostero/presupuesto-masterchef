@@ -1,10 +1,8 @@
-export const revisarPresupuesto = (presupuesto, restante) => {
+export const revisarPresupuesto = (total) => {
     let clase;
 
-    if((presupuesto / 4) > restante) {
+    if(total < 0) {
         clase = "alert alert-danger";
-    }else if ((presupuesto / 2) > restante) {
-        clase = "alert alert-warning";
     }else {
         clase = "alert alert-success";
     }

@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 const Transaccion = ({ transaccion }) => (
     <li className="gastos">
         <p>
-            {transaccion.nombre}
+            {transaccion.descripcion}
 
-            <span className="gasto">$ {transaccion.cantidad}</span>    
+            <span className="gasto">$ {transaccion.monto}</span>    
         </p>
     </li>
 )
