@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Footer = () => {
-    const portfolioUrl = "https://www.martinezjuancruz.com";
+    const portfolioUrl = 'https://www.martinezjuancruz.com';
     return (
         <>
             <hr></hr> 

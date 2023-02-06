@@ -2,15 +2,15 @@ import React from 'react';
 import { revisarPresupuesto } from "../helpers";
 import PropTypes from "prop-types";
 
-const ControlPresupuesto = ({ presupuesto, restante }) => {
+const ControlPresupuesto = ({ gastos, ingresos }) => {
     return ( 
         <>
             <div className="alert alert-primary">
-                Persupuesto: {presupuesto}
+                Total Gastos: {gastos}
             </div>
 
-            <div className={revisarPresupuesto(presupuesto, restante)}>
-                Restante: {restante}
+            <div className={revisarPresupuesto(gastos, ingresos)}>
+                Total Ingresos: {ingresos}
             </div>
 
         </>

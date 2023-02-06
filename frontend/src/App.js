@@ -1,4 +1,3 @@
-import Pregunta from "./components/Pregunta";
 import React, { useState, useEffect } from 'react';
 import Formulario from "./components/Formulario";
 import Listado from "./components/Listado";
@@ -8,68 +7,52 @@ import Footer from "./components/Footer";
 
 function App() {
 
-  const [presupuesto, setPresupuesto] = useState(0);
   const [restante, setRestante] = useState(0);
-  const [mostrarpregunta, setMostrarPregunta] = useState(true);
-  const [gastos, setGastos] = useState([]);
-  const [gasto, setGasto] = useState({});
-  const [creargasto, setCrearGasto] = useState(false);
+  const [transacciones, setTransacciones] = useState([]);
+  const [transaccion, setTransaccion] = useState({});
+  const [crearTransaccion, setCrearTransaccion] = useState(false);
 
   useEffect(() => {
-    if(creargasto) {
+    if(crearTransaccion) {
 
       //Agrega el nuevo presupuesto
-      setGastos([
-        ...gastos,
-        gasto
+      setTransacciones([
+        ...transacciones,
+        transaccion
       ]);
 
       //Resta del presupuesto actual
-      const presupuestoRestante = restante - gasto.cantidad;
+      const presupuestoRestante = restante - transaccion.cantidad;
       setRestante(presupuestoRestante);
 
       //Resetear a false
-      setCrearGasto(false);
+      setCrearTransaccion(false);
     }
-  }, [gasto, creargasto, gastos, restante]);
+  }, [transaccion, crearTransaccion, transacciones, restante]);
 
 
   return (
     <div className="container">
       <header>
-        <h1>Gasto Semanal - Master Chef</h1>
-
+        <h1>Gastos e Ingresos - Master Chef</h1>
         <div className="contenido-principal contenido">
-          {mostrarpregunta 
-            ? (
-              <Pregunta 
-                setPresupuesto={setPresupuesto}
-                setRestante={setRestante}
-                setMostrarPregunta={setMostrarPregunta}
+          <div className="row">
+            <div className="one-half column">
+              <Formulario 
+                setTransaccion={setTransaccion}
+                setCrearTransaccion={setCrearTransaccion}
               />
-            ) : (
-              <div className="row">
-                <div className="one-half column">
-                  <Formulario 
-                    setGasto={setGasto}
-                    setCrearGasto={setCrearGasto}
-                  />
-                </div>
-                <div className="one-half column">
-                  <Listado 
-                    gastos={gastos}
+            </div>
+            <div className="one-half column">
+              <Listado 
+                transacciones={transacciones}
 
-                  />
-
-                  <ControlPresupuesto 
-                    presupuesto={presupuesto}
-                    restante={restante}
-                  />
-                </div>
-              </div>
-            )
-          }
-          
+              />
+              <ControlPresupuesto 
+                total={restante}
+              />
+            </div>
+          </div>
         </div>
       </header>
       <footer>

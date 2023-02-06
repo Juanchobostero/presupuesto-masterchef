@@ -30,7 +30,7 @@ header {
 .contenido-principal {
   background-color: rgb(185, 181, 181);
   padding: 30px;
-  border-radius: 20px;
+  border-radius: 5px;
   margin-top: 70px;
 }
 .presupuesto p{
@@ -48,14 +48,14 @@ h1 {
   font-weight: 100;
   color: white;
   text-align: center;
-  font-size: 2rem!important;
+  font-size: 2.5rem!important;
 }
 h2 {
   font-family: 'Raleway', sans-serif;
   font-weight: 100;
   color:#000000;
   margin-bottom:30px;
-  font-size:2.5rem!important;
+  font-size:2.2rem!important;
   text-align: center;
 }
 .campo {

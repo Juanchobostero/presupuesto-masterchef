@@ -1,75 +1,34 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import bodyParser from 'body-parser';
-import MongoClient from 'mongoose';
 import cors from 'cors';
+import colors from 'colors';
+import connectDB from './config/db.js';
+import morgan from 'morgan';
+import transactionRoutes from './routes/transactionRoutes.js';
+import transactionTypeRoutes from './routes/transactionTypeRoutes.js';
 
 dotenv.config();
 
+connectDB();
+
 const app = express();
 
-const uri = "mongodb+srv://luzbe:luzbe420@cluster0.ghu0ofz.mongodb.net/ecommercedb";
+if(process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+}
 
-MongoClient.connect(uri, {
-    useUnifiedTopology: true
-}).then(client => {
-    console.log('Connected to Database');
-    const db = client.db('ecommercedb');
-    const usersCollection = db.collection('users');
+app.use(express.json());
 
+app.get('/', (req, res) => {
+    res.send('API is running ...');
+});
 
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
-    app.use(cors());
+app.use('/api/transactions', transactionRoutes);
+app.use('/api/transaction-types', transactionTypeRoutes);
 
-    app.get('/users', (req, res) => {
-        const cursor = db.collection('quotes').find()
-        console.log(cursor);
+const PORT = process.env.PORT || 5000;
 
-        console.log('kkk');
-        usersCollection.find().toArray()
-            .then(results => {
-                res.json(results);
-            })
-            .catch(error => console.error(error))
-    });
-
-    /* app.post('/users-list', (req, res) => {
-
-        usersCollection.insertOne(req.body)
-            .then(result => {
-                res.json(req.body);
-            })
-            .catch(error => console.error(error))
-    });
-    app.put('/users-list', (req, res) => {
-        usersCollection.findOneAndUpdate({ ID: req.body.ID },
-            {
-                $set: req.body
-            },
-            {
-                upsert: true
-            })
-            .then(result => {
-                res.json(req.body);
-            })
-            .catch(error => console.error(error))
-    });
-    app.delete('/users-list',  (req, res) => {
-        usersCollection.deleteOne(
-            { ID: req.body.ID }
-        )
-            .then(result => {
-                if (result.deletedCount === 0) {
-                    return res.json('No user to delete')
-                }
-                res.json(``)
-            })
-            .catch(error => console.error(error))
-    }); */
-    app.listen(5000, () => {
-        console.log('listening on 5000')
-    });
-
-
-}).catch(err => console.log("Not Connected to Database ERROR! ", err));
+app.listen(
+    PORT, 
+    console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`.yellow.bold)
+);

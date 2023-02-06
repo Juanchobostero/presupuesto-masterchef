@@ -3,73 +3,94 @@ import Error from './Error';
 import shortid from 'shortid';
 import PropTypes from "prop-types";
 
-const Formulario = ({ setGasto, setCrearGasto }) => {
+const Formulario = ({ setTransaccion, setCrearTransaccion }) => {
 
-    const [nombre, setNombre] = useState("");
-    const [cantidad, setCantidad] = useState(0); 
+    const tipos = [
+        { id: 1, descripcion: 'Gasto'},
+        { id: 2, descripcion: 'Ingreso'},
+    ];
+
+    const [descripcion, setDescripcion] = useState("");
+    const [tipo, setTipo] = useState(tipos[0]);
+    const [monto, setMonto] = useState(0); 
     const [error, setError] = useState(false);
 
+    
+
     //Cuando el user agrega un gasto
-    const addGasto = e => {
+    const addtransaccion = e => {
         e.preventDefault();
 
         //Validar 
-        if(cantidad < 1 || isNaN(cantidad) || nombre.trim() === "") {
+        if(monto < 1 || isNaN(monto) || descripcion.trim() === "") {
             setError(true);
             return;
         }
 
         setError(false);
 
-        //Construir el Gasto
-        const gasto = {
-            nombre,
-            cantidad,
+        //Construir la transacción
+        const transaccion = {
+            descripcion,
+            tipo,
+            monto,
             id: shortid.generate()
         }
 
         //Pasar el gasto al componente principal
-        setGasto(gasto);
-        setCrearGasto(true);
+        setTransaccion(transaccion);
+        setCrearTransaccion(true);
         
         //Resetear el form
-        setNombre("");
-        setCantidad(0);
+        setDescripcion("");
+        setMonto(0);
     }
 
     return(
         <form
-            onSubmit={addGasto}
+            onSubmit={addtransaccion}
         >
-            <h2>Agregá tus Gastos</h2>
-
+            <h2>Agregá tu Gasto/Ingreso</h2>
             {error ? <Error msg="Ambos campos son obligatorios o Presupuesto incorrecto"/> : null}
-
             <div className="campo">
-                <label>Nombre Gasto</label>
+                <label>Nombre</label>
                 <input
                     type="text"
                     className="u-full-width"
                     placeholder="Ej. Transporte"
-                    value={nombre}
-                    onChange={e => setNombre(e.target.value)}
+                    value={descripcion}
+                    onChange={e => setDescripcion(e.target.value)}
                 />
             </div>
             <div className="campo">
-                <label>Cantidad Gasto</label>
+                <label>Tipo</label>
+                <select 
+                    value={tipo} 
+                    onChange={e => setTipo(e.target.value)}
+                    className="u-full-width"
+                >
+                    {tipos.map((tipo) => (
+                        <option value={tipo.id} key={tipo.id}>
+                            {tipo.descripcion}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="campo">
+                <label>Monto</label>
                 <input
                     type="number"
                     className="u-full-width"
                     placeholder="Ej. 300"
-                    value={cantidad}
-                    onChange={e => setCantidad(parseInt(e.target.value))}
+                    value={monto}
+                    onChange={e => setMonto(parseInt(e.target.value))}
                 />
             </div>
 
             <input 
                 type="submit"
                 className="button-primary u-full-width"
-                vallue="Agregar Gasto"
+                value="Agregar"
             />
         </form>
     );
@@ -77,8 +98,8 @@ const Formulario = ({ setGasto, setCrearGasto }) => {
 }
 
 Formulario.propTypes = {
-    setGasto: PropTypes.func.isRequired,
-    setCrearGasto: PropTypes.func.isRequired,
+    setTransaccion: PropTypes.func.isRequired,
+    setCrearTransaccion: PropTypes.func.isRequired,
 }
  
 export default Formulario;
