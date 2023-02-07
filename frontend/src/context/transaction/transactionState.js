@@ -18,7 +18,8 @@ const TransactionState = props => {
     const initialState = {
         loading: false,
         transactions: [],
-        error: false
+        error: false,
+        total: 0
     }
 
     const [state, dispatch] = useReducer(transactionReducer, initialState);
@@ -41,18 +42,13 @@ const TransactionState = props => {
         
     };
 
-    const darkTheme = () => {
-        dispatch({
-            type: GET_TRANSACTIONS_REQUEST
-        });
-    };
-
     return (
         <transactionContext.Provider
             value={{
                 loading: state.loading,
                 transactions: state.transactions,
                 error: state.error,
+                total: state.total,
                 getTransactions,
             }}
         >

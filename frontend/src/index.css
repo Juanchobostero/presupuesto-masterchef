@@ -6,15 +6,16 @@ body {
   background: -webkit-linear-gradient(to right, #660505, #070707);  
   background: linear-gradient(to right, #920000, #070707); 
   margin: 0;
-  padding: 0;
+  padding: 0.5rem;
   font-family: sans-serif;
   border-top: 1rem solid #888888;
+  font-size: 20px!important;
 }
-header, footer {
-  margin: 25px 0;
-}
+
 header {
-  min-height: 70vh;
+  width: 100%;
+  height: 20vh;
+  font-size: 2rem!important;
 }
 .footer {
   display: flex;
@@ -29,9 +30,11 @@ header {
 }
 .contenido-principal {
   background-color: rgb(185, 181, 181);
-  padding: 30px;
+  padding: 2rem;
   border-radius: 5px;
-  margin-top: 70px;
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 10rem;
 }
 .presupuesto p{
   margin-bottom: 0;
@@ -116,4 +119,40 @@ h2 {
 }
 #portfolio-link {
   text-decoration: none;
+}
+
+.line {
+  border: 5px solid white;
+}
+
+.btn-login {
+  margin: 1rem;
+  width: 100%;
+  font-size: 2rem!important;
+  width: 100%;
+  margin: 1rem auto;
+}
+
+.menu {
+  margin: 0;
+  height: 10vh;
+  background-color: #960505;
+  color: white;
+}
+
+.logout {
+  cursor: pointer;
+}
+
+.login {
+  color: rgb(185, 181, 181);
+  font-size: 2rem!important;
+}
+
+.user-text {
+  color:#888888 !important;
+}
+
+.main-title {
+  cursor: pointer;
 }

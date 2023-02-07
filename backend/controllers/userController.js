@@ -19,7 +19,7 @@ const authUser = asyncHandler( async (req, res) => {
         });
     } else {
         res.status(401);
-        throw new Error('Invalid email or password');
+        throw new Error('Datos incorrectos !');
     }
 });
 
@@ -47,7 +47,6 @@ const registerUser = asyncHandler( async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
-            isAdmin: user.isAdmin,
             token: generateToken(user._id)
         });  
     } else {
