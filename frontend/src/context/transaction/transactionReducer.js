@@ -16,24 +16,23 @@ export default (state, action) => {
         case GET_TRANSACTIONS_REQUEST:
             return {
                 loading: true,
-                transactions: [],
+                ...state
             }    
         case GET_TRANSACTIONS_SUCCESS: 
             return {
                 loading: false,
                 transactions: action.payload,
-                error: false
             }
             
         case GET_TRANSACTIONS_FAIL:
             return {
                 loading: false,
-                error: true
+                error: action.payload
             }
         case ADD_TRANSACTION_REQUEST:
             return {
                 loading: true,
-                transactions: [...state.transactions]
+                ...state
             }
         case ADD_TRANSACTION_SUCCESS:
             return {
@@ -42,21 +41,22 @@ export default (state, action) => {
             }
         case ADD_TRANSACTION_FAIL:
             return {
-                transactions: [...state.transactions],
                 loading: false,
-                error: true
+                error: action.payload
             }
         case GET_TRANSACTION_TYPES_REQUEST:
             return {
-                transactionTypes: []
+                loading: true,
+                ...state
             }
         case GET_TRANSACTION_TYPES_SUCCESS:
             return {
+                loading: false,
                 transactionTypes: action.payload
             }
         case GET_TRANSACTION_TYPES_FAIL:
             return {
-                transactionTypes: [],
+                loading: false,
                 error: action.payload
             }
         default:

@@ -5,13 +5,10 @@ import PropTypes from "prop-types";
 import { transactionContext } from '../context/transaction/transactionContext';
 import Swal from 'sweetalert2';
 
-const Formulario = () => {
+const Formulario = ({ transactionTypes, addTransaction }) => {
     const [descripcion, setDescripcion] = useState("");
     const [tipo, setTipo] = useState(null);
     const [monto, setMonto] = useState(0);
-
-    const transContext = useContext(transactionContext);
-    const { addTransaction, transactionTypes, getTransactionTypes } = transContext;
 
 
     //Cuando el user agrega un gasto
@@ -39,12 +36,6 @@ const Formulario = () => {
         setDescripcion("");
         setMonto(0);
     }
-
-    useEffect(() => {
-        if(!transactionTypes) {
-            getTransactionTypes();
-        }
-    }, []);
     
 
     return(
@@ -95,10 +86,6 @@ const Formulario = () => {
         </form>
     );
     
-}
-
-Formulario.propTypes = {
-    transactionTypes: PropTypes.array.isRequired
 }
  
 export default Formulario;

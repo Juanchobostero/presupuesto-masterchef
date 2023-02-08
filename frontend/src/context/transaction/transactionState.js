@@ -18,19 +18,28 @@ import {
 
 const TransactionState = props => {
 
+    const transactionTypesFromStorage = localStorage.getItem('transactionTypes') 
+    ? JSON.parse(localStorage.getItem('transactionTypes')) 
+    : [];
+
+    const transactionsFromStorage = localStorage.getItem('transactions') 
+    ? JSON.parse(localStorage.getItem('transactions')) 
+    : [];
+
     const userInfoFromStorage = localStorage.getItem('userInfo') 
     ? JSON.parse(localStorage.getItem('userInfo')) 
-    : {};
+    : [];
 
     const initialState = {
         loading: false,
-        transactions: [],
-        transactionTypes: [],
+        transactions: transactionsFromStorage,
+        transactionTypes: transactionTypesFromStorage,
         error: false,
         total: 0
     }
 
     const [state, dispatch] = useReducer(transactionReducer, initialState);
+    const url = 'http://localhost:5000';
 
     // Functions
     const getTransactions = async () => {
@@ -38,16 +47,15 @@ const TransactionState = props => {
             dispatch({
                 type: GET_TRANSACTIONS_REQUEST
             });
-            const url = 'http://localhost:5000/api/transactions';
-            const { data } = await axios.get(url);
-    
-            console.log(data);
+            
+            const { data } = await axios.get(url + '/api/transactions');
     
             // Get transactions
             dispatch({
                 type: GET_TRANSACTIONS_SUCCESS,
                 payload: data
             });
+
         } catch (error) {
             dispatch({
                 type: GET_TRANSACTIONS_FAIL,
@@ -63,14 +71,16 @@ const TransactionState = props => {
             dispatch({
                 type: GET_TRANSACTION_TYPES_REQUEST
             });
-            const url = 'http://localhost:5000/api/transaction-types';
-            const { data } = await axios.get(url);
+            ;
+            const { data } = await axios.get(url + '/api/transaction-types');
     
             // Get transactions
             dispatch({
                 type: GET_TRANSACTION_TYPES_SUCCESS,
                 payload: data
             });
+
+            localStorage.setItem('transactionTypes', JSON.stringify(data));
         } catch (error) {
             dispatch({
                 type: GET_TRANSACTION_TYPES_FAIL,

@@ -18,9 +18,9 @@ const Header = () => {
   
   return (
     <header>
-      <Navbar className='menu' fixed='top'>
+      <Navbar className='menu'>
         <Container>
-          <Navbar.Brand><h1 className='main-title'>MASTER CHEF | <span>Delicias</span></h1></Navbar.Brand>
+          <Navbar.Text className='title'>MASTER CHEF | <span>Delicias</span></Navbar.Text>
           <Navbar.Toggle />
           { userInfo && userInfo.name 
             ? (

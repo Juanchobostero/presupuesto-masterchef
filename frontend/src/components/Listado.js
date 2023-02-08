@@ -4,15 +4,10 @@ import { transactionContext } from '../context/transaction/transactionContext';
 import Loader from './Loader';
 import Message from './Message';
 
-const Listado = () => {
+const Listado = ({ transactions }) => {
     const transContext = useContext(transactionContext);
-    const { loading, error, transactions, getTransactions } = transContext;
+    const { loading, error } = transContext;
 
-    useEffect(() => {
-        if(!transactions) {
-            getTransactions();
-        }
-    }, []);
     
     
     return(
@@ -32,7 +27,7 @@ const Listado = () => {
                 <tbody>
                     
                     {
-                        transactions.length > 0 
+                        (transactions && transactions.length > 0) 
                         ? (transactions.map((tr) => (
                             <tr key={tr._id}>
                                 <td>{tr.description}</td>
@@ -42,9 +37,7 @@ const Listado = () => {
                         : (
                             <tr><td>No data PUTO</td></tr>
                         )
-    
-                        
-                    }
+                    } 
                     
                 </tbody>
             </table>
@@ -52,8 +45,5 @@ const Listado = () => {
     )
 }
 
-Listado.propTypes = {
-    transactions: PropTypes.array.isRequired
-}
  
 export default Listado;
