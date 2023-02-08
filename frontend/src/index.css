@@ -1,13 +1,34 @@
+/* base */
+*,
+*::after,
+*::before{
+  box-sizing: inherit;
+}
+
+html{
+  box-sizing: border-box;
+  font-size: 10px;
+}
+
+img{
+  image-orientation: from-image !important;
+}
+
+body{
+  
+}
+
 .alert p {
   margin-bottom: 0!important;
 }
 body {
+  font-family: 'Hind', sans-serif;
+  position: relative;
   background: #000428;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #660505, #070707);  
   background: linear-gradient(to right, #920000, #070707); 
   margin: 0;
   padding: 0.5rem;
-  font-family: sans-serif;
   border-top: 1rem solid #888888;
   font-size: 20px!important;
 }

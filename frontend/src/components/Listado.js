@@ -1,21 +1,25 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from "prop-types";
 import { transactionContext } from '../context/transaction/transactionContext';
+import Loader from './Loader';
+import Message from './Message';
 
-const Listado = ({ transacciones }) => {
-
+const Listado = () => {
     const transContext = useContext(transactionContext);
-    const { loading, transactions, error, getTransactions } = transContext;
+    const { loading, error, transactions, getTransactions } = transContext;
 
     useEffect(() => {
-        getTransactions();
-      console.log(transactions);
+        if(!transactions) {
+            getTransactions();
+        }
     }, []);
     
-
+    
     return(
         <div className="gastos-realizados">
             <h2>Listado</h2>
+            {loading && (<Loader />)}
+            {error && (<Message variant='danger'>{error}</Message>)} 
             <table>
                 <thead>
                     <tr>
@@ -26,18 +30,21 @@ const Listado = ({ transacciones }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* { transactions.length > 0 
-                        ? (transactions.map((transaccion) => (
-                            <tr key={transaccion.id}>
-                                <td>{transaccion.descripcion}</td>
-                                <td>{transaccion.monto}</td>
+                    
+                    {
+                        transactions.length > 0 
+                        ? (transactions.map((tr) => (
+                            <tr key={tr._id}>
+                                <td>{tr.description}</td>
+                                <td>{tr.amount}</td>
                             </tr>
                         ))) 
                         : (
-                            <h3>No data PUTO</h3>
+                            <tr><td>No data PUTO</td></tr>
                         )
-
-                    } */}
+    
+                        
+                    }
                     
                 </tbody>
             </table>
@@ -46,7 +53,7 @@ const Listado = ({ transacciones }) => {
 }
 
 Listado.propTypes = {
-    transacciones: PropTypes.array.isRequired
+    transactions: PropTypes.array.isRequired
 }
  
 export default Listado;

@@ -5,6 +5,7 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 import { userContext } from '../context/user/userContext';
+import Swal from 'sweetalert2';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
@@ -27,6 +28,15 @@ const LoginScreen = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
+
+        if(email === '' || password === '') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Datos incompletos !',
+              })
+            return;
+        }
 
         // DISPATCH LOGIN
         login(email, password);

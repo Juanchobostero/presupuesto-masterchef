@@ -10,14 +10,22 @@ import {
 
     ADD_TRANSACTION_REQUEST,
     ADD_TRANSACTION_SUCCESS,
-    ADD_TRANSACTION_FAIL 
+    ADD_TRANSACTION_FAIL, 
+    GET_TRANSACTION_TYPES_REQUEST,
+    GET_TRANSACTION_TYPES_SUCCESS,
+    GET_TRANSACTION_TYPES_FAIL
 } from "../../types";
 
 const TransactionState = props => {
 
+    const userInfoFromStorage = localStorage.getItem('userInfo') 
+    ? JSON.parse(localStorage.getItem('userInfo')) 
+    : {};
+
     const initialState = {
         loading: false,
         transactions: [],
+        transactionTypes: [],
         error: false,
         total: 0
     }
@@ -26,19 +34,84 @@ const TransactionState = props => {
 
     // Functions
     const getTransactions = async () => {
-        dispatch({
-            type: GET_TRANSACTIONS_REQUEST
-        });
-        const url = 'http://localhost:5000/api/transaction-types';
-        const { data } = await axios.get(url);
+        try {
+            dispatch({
+                type: GET_TRANSACTIONS_REQUEST
+            });
+            const url = 'http://localhost:5000/api/transactions';
+            const { data } = await axios.get(url);
+    
+            console.log(data);
+    
+            // Get transactions
+            dispatch({
+                type: GET_TRANSACTIONS_SUCCESS,
+                payload: data
+            });
+        } catch (error) {
+            dispatch({
+                type: GET_TRANSACTIONS_FAIL,
+                payload: error.response && error.response.data.message 
+                    ? error.response.data.message 
+                    : error.message
+            })
+        }
+    };
 
-        console.log(data);
+    const getTransactionTypes = async () => {
+        try {
+            dispatch({
+                type: GET_TRANSACTION_TYPES_REQUEST
+            });
+            const url = 'http://localhost:5000/api/transaction-types';
+            const { data } = await axios.get(url);
+    
+            // Get transactions
+            dispatch({
+                type: GET_TRANSACTION_TYPES_SUCCESS,
+                payload: data
+            });
+        } catch (error) {
+            dispatch({
+                type: GET_TRANSACTION_TYPES_FAIL,
+                payload: error.response && error.response.data.message 
+                    ? error.response.data.message 
+                    : error.message
+            })
+        }
+        
+        
+    };
 
-        // Get transactions
-        dispatch({
-            type: GET_TRANSACTIONS_SUCCESS,
-            payload: data
-        });
+    const addTransaction = async (transaction) => {
+        try {
+            dispatch({
+                type: ADD_TRANSACTION_REQUEST
+            });
+
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${userInfoFromStorage.token}`
+                }
+            };
+    
+            const url = 'http://localhost:5000';
+            const { data } = await axios.post(url + '/api/transactions', transaction, config);
+    
+            dispatch({
+                type: ADD_TRANSACTION_SUCCESS,
+                payload: data
+            });
+    
+        } catch(error) {
+            dispatch({
+                type: ADD_TRANSACTION_FAIL,
+                payload: error.response && error.response.data.message 
+                    ? error.response.data.message 
+                    : error.message
+            })
+        }
         
     };
 
@@ -47,9 +120,12 @@ const TransactionState = props => {
             value={{
                 loading: state.loading,
                 transactions: state.transactions,
+                transactionTypes: state.transactionTypes,
                 error: state.error,
                 total: state.total,
                 getTransactions,
+                addTransaction,
+                getTransactionTypes
             }}
         >
             {props.children}

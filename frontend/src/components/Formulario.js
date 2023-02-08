@@ -1,21 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Error from './Error';
 import shortid from 'shortid';
 import PropTypes from "prop-types";
+import { transactionContext } from '../context/transaction/transactionContext';
+import Swal from 'sweetalert2';
 
-const Formulario = ({ setTransaccion, setCrearTransaccion }) => {
-
-    const tipos = [
-        { id: 1, descripcion: 'Gasto'},
-        { id: 2, descripcion: 'Ingreso'},
-    ];
-
+const Formulario = () => {
     const [descripcion, setDescripcion] = useState("");
-    const [tipo, setTipo] = useState(tipos[0]);
-    const [monto, setMonto] = useState(0); 
-    const [error, setError] = useState(false);
+    const [tipo, setTipo] = useState(null);
+    const [monto, setMonto] = useState(0);
 
-    
+    const transContext = useContext(transactionContext);
+    const { addTransaction, transactionTypes, getTransactionTypes } = transContext;
+
 
     //Cuando el user agrega un gasto
     const addtransaccion = e => {
@@ -23,35 +20,38 @@ const Formulario = ({ setTransaccion, setCrearTransaccion }) => {
 
         //Validar 
         if(monto < 1 || isNaN(monto) || descripcion.trim() === "") {
-            setError(true);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Todos los campos son obligatorios !',
+              })
             return;
         }
 
-        setError(false);
-
-        //Construir la transacción
-        const transaccion = {
-            id: shortid.generate(),
-            tipo,
-            descripcion,
-            monto
-        }
-
-        //Pasar el gasto al componente principal
-        setTransaccion(transaccion);
-        setCrearTransaccion(true);
+        //Construir la transacción y pasarla al método
+        addTransaction({
+            description: descripcion,
+            transactionType: tipo,
+            amount: monto
+        })
         
         //Resetear el form
         setDescripcion("");
         setMonto(0);
     }
 
+    useEffect(() => {
+        if(!transactionTypes) {
+            getTransactionTypes();
+        }
+    }, []);
+    
+
     return(
         <form
             onSubmit={addtransaccion}
         >
             <h2>Agregá tu Gasto/Ingreso</h2>
-            {error ? <Error msg="Ambos campos son obligatorios o Presupuesto incorrecto"/> : null}
             <div className="campo">
                 <label>Nombre</label>
                 <input
@@ -69,9 +69,9 @@ const Formulario = ({ setTransaccion, setCrearTransaccion }) => {
                     onChange={e => setTipo(e.target.value)}
                     className="u-full-width"
                 >
-                    {tipos.map((tipo) => (
-                        <option value={tipo.id} key={tipo.id}>
-                            {tipo.descripcion}
+                    {transactionTypes.map((type) => (
+                        <option value={type._id} key={type._id}>
+                            {type.description}
                         </option>
                     ))}
                 </select>
@@ -98,8 +98,7 @@ const Formulario = ({ setTransaccion, setCrearTransaccion }) => {
 }
 
 Formulario.propTypes = {
-    setTransaccion: PropTypes.func.isRequired,
-    setCrearTransaccion: PropTypes.func.isRequired,
+    transactionTypes: PropTypes.array.isRequired
 }
  
 export default Formulario;

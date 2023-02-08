@@ -2,6 +2,9 @@ import {
     GET_TRANSACTIONS_REQUEST,
     GET_TRANSACTIONS_SUCCESS,
     GET_TRANSACTIONS_FAIL,
+    GET_TRANSACTION_TYPES_REQUEST,
+    GET_TRANSACTION_TYPES_SUCCESS,
+    GET_TRANSACTION_TYPES_FAIL,
     ADD_TRANSACTION_REQUEST,
     ADD_TRANSACTION_SUCCESS,
     ADD_TRANSACTION_FAIL
@@ -29,7 +32,8 @@ export default (state, action) => {
             }
         case ADD_TRANSACTION_REQUEST:
             return {
-                loading: true
+                loading: true,
+                transactions: [...state.transactions]
             }
         case ADD_TRANSACTION_SUCCESS:
             return {
@@ -38,8 +42,22 @@ export default (state, action) => {
             }
         case ADD_TRANSACTION_FAIL:
             return {
+                transactions: [...state.transactions],
                 loading: false,
                 error: true
+            }
+        case GET_TRANSACTION_TYPES_REQUEST:
+            return {
+                transactionTypes: []
+            }
+        case GET_TRANSACTION_TYPES_SUCCESS:
+            return {
+                transactionTypes: action.payload
+            }
+        case GET_TRANSACTION_TYPES_FAIL:
+            return {
+                transactionTypes: [],
+                error: action.payload
             }
         default:
             return state;
