@@ -1,14 +1,13 @@
 import React, { useReducer } from "react";
 import userReducer from "./userReducer.js";
 import { userContext } from "./userContext.js";
-import axios from 'axios';
-
 import { 
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAIL,
     USER_LOGOUT
 } from "../../types";
+import axiosClient from "../../config/axios.js";
 
 const UserState = props => {
 
@@ -37,8 +36,7 @@ const UserState = props => {
                 }
             };
     
-            const url = 'http://localhost:5000';
-            const { data } = await axios.post(url + '/api/users/login', { email, password }, config);
+            const { data } = await axiosClient.post('/api/users/login', { email, password }, config);
     
             dispatch({
                 type: USER_LOGIN_SUCCESS,

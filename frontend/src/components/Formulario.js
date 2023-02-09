@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Error from './Error';
-import shortid from 'shortid';
-import PropTypes from "prop-types";
-import { transactionContext } from '../context/transaction/transactionContext';
+import React, { useContext, useState } from 'react';
 import Swal from 'sweetalert2';
+import { transactionContext } from '../context/transaction/transactionContext';
 
-const Formulario = ({ transactionTypes, addTransaction }) => {
+const Formulario = () => {
+
     const [descripcion, setDescripcion] = useState("");
-    const [tipo, setTipo] = useState(null);
+    const [tipo, setTipo] = useState('');
     const [monto, setMonto] = useState(0);
 
+    const transContext = useContext(transactionContext);
+    const { transactionTypes, addTransaction } = transContext;
 
     //Cuando el user agrega un gasto
     const addtransaccion = e => {

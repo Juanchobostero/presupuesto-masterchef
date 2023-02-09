@@ -1,7 +1,6 @@
 import React, { useReducer } from "react";
 import transactionReducer from "./transactionReducer.js";
 import { transactionContext } from "./transactionContext.js";
-import axios from 'axios';
 
 import { 
     GET_TRANSACTIONS_REQUEST, 
@@ -15,6 +14,7 @@ import {
     GET_TRANSACTION_TYPES_SUCCESS,
     GET_TRANSACTION_TYPES_FAIL
 } from "../../types";
+import axiosClient from "../../config/axios.js";
 
 const TransactionState = props => {
 
@@ -28,7 +28,7 @@ const TransactionState = props => {
 
     const userInfoFromStorage = localStorage.getItem('userInfo') 
     ? JSON.parse(localStorage.getItem('userInfo')) 
-    : [];
+    : {};
 
     const initialState = {
         loading: false,
@@ -39,7 +39,6 @@ const TransactionState = props => {
     }
 
     const [state, dispatch] = useReducer(transactionReducer, initialState);
-    const url = 'http://localhost:5000';
 
     // Functions
     const getTransactions = async () => {
@@ -48,7 +47,7 @@ const TransactionState = props => {
                 type: GET_TRANSACTIONS_REQUEST
             });
             
-            const { data } = await axios.get(url + '/api/transactions');
+            const { data } = await axiosClient.get('/api/transactions');
     
             // Get transactions
             dispatch({
@@ -72,7 +71,7 @@ const TransactionState = props => {
                 type: GET_TRANSACTION_TYPES_REQUEST
             });
             ;
-            const { data } = await axios.get(url + '/api/transaction-types');
+            const { data } = await axiosClient.get('/api/transaction-types');
     
             // Get transactions
             dispatch({
@@ -106,8 +105,7 @@ const TransactionState = props => {
                 }
             };
     
-            const url = 'http://localhost:5000';
-            const { data } = await axios.post(url + '/api/transactions', transaction, config);
+            const { data } = await axiosClient.post('/api/transactions', transaction, config);
     
             dispatch({
                 type: ADD_TRANSACTION_SUCCESS,
@@ -134,8 +132,8 @@ const TransactionState = props => {
                 error: state.error,
                 total: state.total,
                 getTransactions,
-                addTransaction,
-                getTransactionTypes
+                getTransactionTypes,
+                addTransaction
             }}
         >
             {props.children}

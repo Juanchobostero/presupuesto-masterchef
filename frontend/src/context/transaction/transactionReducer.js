@@ -22,6 +22,7 @@ export default (state, action) => {
             return {
                 loading: false,
                 transactions: action.payload,
+                ...state  
             }
             
         case GET_TRANSACTIONS_FAIL:
@@ -52,7 +53,8 @@ export default (state, action) => {
         case GET_TRANSACTION_TYPES_SUCCESS:
             return {
                 loading: false,
-                transactionTypes: action.payload
+                transactionTypes: action.payload,
+                ...state
             }
         case GET_TRANSACTION_TYPES_FAIL:
             return {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ControlPresupuesto from '../components/ControlPresupuesto';
 import Formulario from '../components/Formulario';
@@ -14,29 +14,27 @@ const HomeScreen = () => {
   const diferencia = 0;
 
   const transContext = useContext(transactionContext);
-  const { loading, error, transactionTypes, transactions, getTransactionTypes, getTransactions, addTransaction } = transContext;
+  const { loading, error, transactionTypes, transactions, getTransactions, getTransactionTypes, addTransaction } = transContext;
 
   useEffect(() => {
-    getTransactionTypes();
+    
     if(userInfo && userInfo.name) {
-      console.log(userInfo);
+      getTransactionTypes();
+      getTransactions();
     } else {
-        navigate('/login');
+      navigate('/login');
     }
   
   }, [userInfo, navigate]);
 
-  
-
-
   return (
     <div className="contenido-principal contenido">
         <div className="row">
-          <div className="one-half column">
+          <div className="col-md-4 col-sm-6">
               <Formulario transactionTypes={transactionTypes} addTransaction={addTransaction}/>
           </div>
-          <div className="one-half column">
-              <Listado transactions={transactions} />
+          <div className="col-md-8 col-sm-6">
+              <Listado />
               <ControlPresupuesto 
                 total={diferencia}
               />

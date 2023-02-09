@@ -4,12 +4,7 @@ import { transactionContext } from '../context/transaction/transactionContext';
 import Loader from './Loader';
 import Message from './Message';
 
-const Listado = ({ transactions }) => {
-    const transContext = useContext(transactionContext);
-    const { loading, error } = transContext;
-
-    
-    
+const Listado = ({ transactions, loading, error }) => {
     return(
         <div className="gastos-realizados">
             <h2>Listado</h2>

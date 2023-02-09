@@ -73,6 +73,11 @@ h2 {
   margin-bottom:30px;
   text-align: center;
 }
+
+form {
+  width: 65%;
+}
+
 .campo {
   margin-bottom: 2rem;
 }
@@ -106,9 +111,12 @@ h2 {
   background-color: #fff3cd;
   border-color: #ffeeba;
 }
+
 .gastos-realizados  {
   margin-bottom: 2rem;
+  width: 100%;
 }
+
 .gastos-realizados li{
   list-style: none;
   margin-bottom: 0rem;
