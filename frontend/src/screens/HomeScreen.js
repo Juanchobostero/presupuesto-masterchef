@@ -15,10 +15,9 @@ const HomeScreen = () => {
   const diferencia = 0;
 
   const transContext = useContext(transactionContext);
-  const { getTransactions, getTransactionTypes, transactions } = transContext;
+  const { getTransactions, getTransactionTypes, transactions, transactionTypes } = transContext;
 
   useEffect(() => {
-    
     if(userInfo && userInfo.name) {
       getTransactionTypes();
       getTransactions();
@@ -26,7 +25,7 @@ const HomeScreen = () => {
       navigate('/login');
     }
   
-  }, [userInfo, navigate]);
+  }, [transactions, transactionTypes, userInfo, navigate]);
 
   return (
     <div className="contenido-principal contenido">

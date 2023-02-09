@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import Swal from 'sweetalert2';
+import alertContext from '../context/alerts/alertContext';
 import { transactionContext } from '../context/transaction/transactionContext';
 
 const Formulario = () => {
@@ -8,8 +9,11 @@ const Formulario = () => {
     const [tipo, setTipo] = useState('Seleccionar');
     const [monto, setMonto] = useState(0);
 
+    const alertsContext = useContext(alertContext);
+    const { alert } = alertsContext;
+
     const transContext = useContext(transactionContext);
-    const { transactionTypes, addTransaction } = transContext;
+    const { transactionTypes, addTransaction, getTransactions } = transContext;
 
     //Cuando el user agrega un gasto
     const addtransaccion = e => {
@@ -35,6 +39,8 @@ const Formulario = () => {
         //Resetear el form
         setDescripcion("");
         setMonto(0);
+
+        getTransactions();
     }
     
 
@@ -44,6 +50,7 @@ const Formulario = () => {
         >
             <h3>Agregar nuevo</h3>
             <hr></hr>
+            { alert && <div className={`alerta ${alert.category}`}>{ alert.msg }</div>}
             <div className="campo">
                 <label>Nombre</label>
                 <input

@@ -90,8 +90,6 @@ const TransactionState = props => {
                     : error.message
             })
         }
-        
-        
     };
 
     const addTransaction = async (transaction) => {
@@ -118,8 +116,8 @@ const TransactionState = props => {
             dispatch({
                 type: ADD_TRANSACTION_FAIL,
                 payload: error.response && error.response.data.message 
-                    ? error.response.data.message 
-                    : error.message
+                ? error.response.data.message 
+                : error.message
             })
         }
         

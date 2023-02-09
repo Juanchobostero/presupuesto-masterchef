@@ -4,32 +4,37 @@ import { transactionContext } from '../context/transaction/transactionContext';
 import Loader from './Loader';
 import Message from './Message';
 
-
-
-
-
 const TableList = () => {
     const transContext = useContext(transactionContext);
     const { transactions, loading, error } = transContext;
 
     const columns = [
         {
-            name: '#',
-            selector: row => row.title,
+            name: '#'
         },
         {
-            name: 'Nombre',
+            name: 'DESCRIPCIÓN',
             selector: row => row.description,
+            sortable: true,
         },
         {
             name: 'TIPO',
             selector: row => row.transactionType,
+            sortable: true,
         },
         {
-            name: 'Creación',
+            name: 'CREACIÓN',
             selector: row => row.createdAt,
+            sortable: true,
         },
     ];
+
+    const paginationComponentOptions = {
+        rowsPerPageText: 'Filas por página',
+        rangeSeparatorText: 'de',
+        selectAllRowsItem: true,
+        selectAllRowsItemText: 'Todos',
+    };
 
     return (
         <div>
@@ -42,6 +47,7 @@ const TableList = () => {
                 data={transactions}
                 fixedHeader
                 fixedHeaderScrollHeight="300px"
+                pagination paginationComponentOptions={paginationComponentOptions}
             />
         </div>
     );

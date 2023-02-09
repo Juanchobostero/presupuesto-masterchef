@@ -7,12 +7,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import AlertState from './context/alerts/alertState';
 
 function App() {
 
   return (
     <TransactionState>
       <UserState>
+      <AlertState>
         <Router>
           <Header />
             <Routes>
@@ -21,6 +23,7 @@ function App() {
             </Routes>
           <Footer />
         </Router>
+        </AlertState>
       </UserState>
     </TransactionState>
   );
