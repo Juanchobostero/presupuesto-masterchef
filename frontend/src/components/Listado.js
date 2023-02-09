@@ -1,10 +1,14 @@
 import React, { useContext, useEffect } from 'react';
-import PropTypes from "prop-types";
 import { transactionContext } from '../context/transaction/transactionContext';
 import Loader from './Loader';
 import Message from './Message';
 
-const Listado = ({ transactions, loading, error }) => {
+const Listado = () => {
+
+    const transContext = useContext(transactionContext);
+    const { transactions, loading, error } = transContext;
+    
+
     return(
         <div className="gastos-realizados">
             <h2>Listado</h2>

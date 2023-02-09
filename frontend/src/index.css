@@ -75,7 +75,7 @@ h2 {
 }
 
 form {
-  width: 65%;
+  width: 100%;
 }
 
 .campo {
@@ -190,4 +190,9 @@ form {
 
 .list-unstyled > li {
   margin: 1rem;
+}
+
+.table-data {
+  margin-bottom: 1rem;
+  width: 90%;
 }

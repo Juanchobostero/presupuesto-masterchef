@@ -38,7 +38,8 @@ export default (state, action) => {
         case ADD_TRANSACTION_SUCCESS:
             return {
                 loading: false,
-                transactions: [...state.transactions, action.payload]
+                transactions: [...state.transactions, action.payload],
+                ...state
             }
         case ADD_TRANSACTION_FAIL:
             return {

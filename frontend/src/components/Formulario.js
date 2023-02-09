@@ -5,7 +5,7 @@ import { transactionContext } from '../context/transaction/transactionContext';
 const Formulario = () => {
 
     const [descripcion, setDescripcion] = useState("");
-    const [tipo, setTipo] = useState('');
+    const [tipo, setTipo] = useState('Seleccionar');
     const [monto, setMonto] = useState(0);
 
     const transContext = useContext(transactionContext);
@@ -42,7 +42,8 @@ const Formulario = () => {
         <form
             onSubmit={addtransaccion}
         >
-            <h2>Agregá tu Gasto/Ingreso</h2>
+            <h3>Agregar nuevo</h3>
+            <hr></hr>
             <div className="campo">
                 <label>Nombre</label>
                 <input

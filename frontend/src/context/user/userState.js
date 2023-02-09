@@ -56,6 +56,8 @@ const UserState = props => {
 
     const logout = () => {
         localStorage.removeItem('userInfo');
+        localStorage.removeItem('transactions');
+        localStorage.removeItem('transactionTypes');
         dispatch({ type: USER_LOGOUT });
     };
 

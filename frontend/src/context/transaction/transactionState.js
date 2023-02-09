@@ -55,6 +55,8 @@ const TransactionState = props => {
                 payload: data
             });
 
+            localStorage.setItem('transactions', JSON.stringify(data));
+
         } catch (error) {
             dispatch({
                 type: GET_TRANSACTIONS_FAIL,
