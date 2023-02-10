@@ -1,13 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import alertContext from '../context/alerts/alertContext';
 import { transactionContext } from '../context/transaction/transactionContext';
 
 const Formulario = () => {
-
-    const [descripcion, setDescripcion] = useState("");
-    const [tipo, setTipo] = useState('Seleccionar');
-    const [monto, setMonto] = useState(0);
 
     const alertsContext = useContext(alertContext);
     const { alert } = alertsContext;
@@ -15,12 +11,17 @@ const Formulario = () => {
     const transContext = useContext(transactionContext);
     const { transactionTypes, addTransaction, getTransactions } = transContext;
 
+    const [descripcion, setDescripcion] = useState("");
+    const [tipo, setTipo] = useState(0);
+    const [monto, setMonto] = useState(0);
+
+
     //Cuando el user agrega un gasto
     const addtransaccion = e => {
         e.preventDefault();
 
         //Validar 
-        if(monto < 1 || isNaN(monto) || descripcion.trim() === "") {
+        if(monto < 1 || isNaN(monto) || descripcion.trim() === "" || tipo === 0) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -68,6 +69,9 @@ const Formulario = () => {
                     onChange={e => setTipo(e.target.value)}
                     className="u-full-width"
                 >
+                    <option value={0}>
+                        {'Seleccionar'}
+                    </option>
                     {transactionTypes.map((type) => (
                         <option value={type._id} key={type._id}>
                             {type.description}

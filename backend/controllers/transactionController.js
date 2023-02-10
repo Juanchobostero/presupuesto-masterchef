@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Transaction from '../models/transactionModel.js';
+import TransactionType from '../models/transactionTypeModel.js';
 
 // @desc Register a new budget
 // @route POST /api/transactions
@@ -37,7 +38,19 @@ const registerTransaction = asyncHandler( async (req, res) => {
 // @route GET /api/transactions
 // @access Private
 const getTransactions = asyncHandler( async (req, res) => {
-    const transactions = await Transaction.find({});
+    const transactions = await Transaction.aggregate( [
+       { '$lookup': {
+        'from': TransactionType.collection.name,
+        'localField': 'transactionType',
+        'foreignField': '_id',
+        'as': 'type'
+      }},
+      {
+        $set: {
+            type: { $arrayElemAt: ["$type.description", 0] }
+        }
+      }
+     ] ).sort({ createdAt: -1 });
 
     res.json(transactions);
 });
