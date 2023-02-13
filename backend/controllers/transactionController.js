@@ -21,9 +21,9 @@ const registerTransaction = asyncHandler( async (req, res) => {
         amount
     });
 
+
     if(transaction) {
         res.status(201).json({
-            _id: transaction._id,
             description: transaction.description,
             amount: transaction.amount,
             transactionType: transaction.transactionType
@@ -38,19 +38,26 @@ const registerTransaction = asyncHandler( async (req, res) => {
 // @route GET /api/transactions
 // @access Private
 const getTransactions = asyncHandler( async (req, res) => {
-    const transactions = await Transaction.aggregate( [
-       { '$lookup': {
+    const transactions = await Transaction.aggregate([
+       { 
+        '$lookup': {
         'from': TransactionType.collection.name,
         'localField': 'transactionType',
         'foreignField': '_id',
         'as': 'type'
-      }},
+        }
+       },
       {
         $set: {
             type: { $arrayElemAt: ["$type.description", 0] }
         }
+      },
+      {
+        $set: {
+           dateFormat: { $dateToString: { format: "%Y-%m-%d %H:%M:%S", date: "$createdAt" } }
+        }
       }
-     ] ).sort({ createdAt: -1 });
+     ]).sort({ createdAt: -1 });
 
     res.json(transactions);
 });
@@ -59,8 +66,27 @@ const getTransactions = asyncHandler( async (req, res) => {
 // @desc Get transaction by ID
 // @route GET /api/transactions/:id
 // @access Private
-const getTransactionById = asyncHandler( async (req, res) => {
-    const transaction = await Transaction.findById(req.params.id);
+const getTransactionById = asyncHandler( async (req, res, id) => {
+    const transaction = await Transaction.findById(id).aggregate([
+        { 
+         '$lookup': {
+         'from': TransactionType.collection.name,
+         'localField': 'transactionType',
+         'foreignField': '_id',
+         'as': 'type'
+         }
+        },
+       {
+         $set: {
+             type: { $arrayElemAt: ["$type.description", 0] }
+         }
+       },
+       {
+         $set: {
+            dateFormat: { $dateToString: { format: "%Y-%m-%d %H:%M:%S", date: "$createdAt" } }
+         }
+       }
+      ]);
 
     if(transaction) {
         res.json(transaction);

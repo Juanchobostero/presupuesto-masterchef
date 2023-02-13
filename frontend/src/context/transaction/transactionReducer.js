@@ -39,6 +39,8 @@ export default (state, action) => {
             return {
                 ...state,
                 transactions: [action.payload, ...state.transactions],
+                totalBills: (action.payload.type === 'Gasto' ? state.totalBills + action.payload.amount : state.totalBills),
+                totalIncomes: (action.payload.type === 'Ingreso' ? state.totalIncomes + action.payload.amount : state.totalIncomes),
                 loading: false,
             }
         case ADD_TRANSACTION_FAIL:

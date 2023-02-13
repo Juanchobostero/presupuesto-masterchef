@@ -67,6 +67,8 @@ const TableList = () => {
 		item => item.description && item.description.toLowerCase().includes(filterText.toLowerCase()),
 	);
 
+    
+
     const columns = [
         {
             name: 'DESCRIPCIÓN',
@@ -85,7 +87,7 @@ const TableList = () => {
         },
         {
             name: 'CREACIÓN',
-            selector: row => row.createdAt,
+            selector: row => row.dateFormat,
             sortable: true,
         },
     ];

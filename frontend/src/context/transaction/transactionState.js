@@ -35,7 +35,9 @@ const TransactionState = props => {
         transactions: transactionsFromStorage,
         transactionTypes: transactionTypesFromStorage,
         error: false,
-        total: 0
+        totalBills: 0,
+        totalIncomes: 0,
+        totalDiff: 0
     }
 
     const [state, dispatch] = useReducer(transactionReducer, initialState);
@@ -131,6 +133,9 @@ const TransactionState = props => {
                 transactionTypes: state.transactionTypes,
                 error: state.error,
                 total: state.total,
+                totalBills: state.totalBills,
+                totalIncomes: state.totalIncomes,
+                totalDiff: state.totalDiff,
                 getTransactions,
                 getTransactionTypes,
                 addTransaction

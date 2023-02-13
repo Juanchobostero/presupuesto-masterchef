@@ -15,7 +15,12 @@ const HomeScreen = () => {
   const diferencia = 0;
 
   const transContext = useContext(transactionContext);
-  const { getTransactions, getTransactionTypes, transactions, transactionTypes, total } = transContext;
+  const { 
+    getTransactions, 
+    getTransactionTypes, 
+    transactions, 
+    transactionTypes
+  } = transContext;
 
   useEffect(() => {
     if(userInfo && userInfo.name) {
@@ -40,15 +45,8 @@ const HomeScreen = () => {
           </div>
         </div>
         <div className='row'>
-            <div className="col-md-6 col-sm-12">
-              <ControlPresupuesto 
-                  total={total}
-              />
-            </div>
-            <div className="col-md-6 col-sm-12">
-              <ControlPresupuesto 
-                  total={total}
-              />
+            <div className="col-md-12 col-sm-12">
+              <ControlPresupuesto />
             </div>
           </div>
         
