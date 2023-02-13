@@ -93,7 +93,7 @@ const Formulario = () => {
             <input 
                 type="submit"
                 className="button-primary u-full-width"
-                value="Agregar"
+                value="AGREGAR"
             />
         </form>
     );

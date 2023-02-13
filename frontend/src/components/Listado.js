@@ -7,7 +7,6 @@ const Listado = () => {
 
     const transContext = useContext(transactionContext);
     const { transactions, loading, error } = transContext;
-    
 
     return(
         <div className="gastos-realizados">

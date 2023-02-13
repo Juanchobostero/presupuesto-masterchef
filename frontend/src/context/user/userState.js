@@ -61,25 +61,6 @@ const UserState = props => {
         dispatch({ type: USER_LOGOUT });
     };
 
-    /* 
-    const getTransactions = async () => {
-        dispatch({
-            type: GET_TRANSACTIONS_REQUEST
-        });
-        const url = 'http://localhost:5000/api/transaction-types';
-        const { data } = await axios.get(url);
-
-        console.log(data);
-
-        // Get transactions
-        dispatch({
-            type: GET_TRANSACTIONS_SUCCESS,
-            payload: data
-        });
-        
-    }; */
-
-
     return (
         <userContext.Provider
             value={{

@@ -1,19 +1,73 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
+import styled from 'styled-components';
 import { transactionContext } from '../context/transaction/transactionContext';
 import Loader from './Loader';
 import Message from './Message';
+
+const TextField = styled.input`
+    height: 15px;
+    width: 95%;
+    border-radius: 3px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px solid #e5e5e5;
+    padding: 0 20px 0 8px;
+    background-color: 'grey';
+    margin-top: '-1rem';
+
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+const ClearButton = styled(Button)`
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    height: 34px;
+    width: 32px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const FilterComponent = ({ filterText, onFilter, onClear }) => (
+    <>
+        <TextField
+            type="text"
+            autoFocus="autoFocus"
+            placeholder="Buscar por nombre"
+            aria-label="Search Input"
+            value={filterText}
+            onChange={onFilter}
+        />
+        <ClearButton type="button" onClick={onClear}>
+            X
+        </ClearButton>
+    </>
+);
 
 const TableList = () => {
 
     const transContext = useContext(transactionContext);
     const { transactions, getTransactions, loading, error } = transContext;
 
+    const [pending, setPending] = useState(true);
+	const [rows, setRows] = useState([]);
+
+    const [filterText, setFilterText] = useState('');
+	const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+	const filteredItems = transactions.filter(
+		item => item.description && item.description.toLowerCase().includes(filterText.toLowerCase()),
+	);
+
     const columns = [
-        {
-            name: '#'
-        },
         {
             name: 'DESCRIPCIÓN',
             selector: row => row.description,
@@ -72,7 +126,7 @@ const TableList = () => {
         
             const columnDelimiter = ';';
             const lineDelimiter = '\n';
-            const keys = Object.keys(transactions[0]);
+            const keys = Object.keys(array[0]);
         
             result = '';
             result += keys.join(columnDelimiter);
@@ -108,30 +162,59 @@ const TableList = () => {
         link.setAttribute('download', filename);
         link.click();
     }
+    
+        const subHeaderComponentMemo = useMemo(() => {
+            const handleClear = () => {
+                if (filterText) {
+                    setResetPaginationToggle(!resetPaginationToggle);
+                    setFilterText('');
+                }
+            };
+    
+            return (
+                <FilterComponent 
+                    onFilter={e => setFilterText(e.target.value)} 
+                    onClear={handleClear} 
+                />
+                
+            );
+        }, [filterText, resetPaginationToggle]);
 
-    const Export = ({ onExport }) => <Button  className={`btn btn-success ${(!transactions) && 'disabled'}`} onClick={e => onExport(e.target.value)}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-file-earmark-excel-fill" viewBox="0 0 16 16"><path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM5.884 6.68 8 9.219l2.116-2.54a.5.5 0 1 1 .768.641L8.651 10l2.233 2.68a.5.5 0 0 1-.768.64L8 10.781l-2.116 2.54a.5.5 0 0 1-.768-.641L7.349 10 5.116 7.32a.5.5 0 1 1 .768-.64z"/></svg></Button>;
+    const Export = ({ onExport }) => <Button  className={`btn btn-success btn-sm ${(!transactions) && 'disabled'}`} onClick={e => onExport(e.target.value)}><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-file-earmark-excel-fill" viewBox="0 0 16 16"><path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM5.884 6.68 8 9.219l2.116-2.54a.5.5 0 1 1 .768.641L8.651 10l2.233 2.68a.5.5 0 0 1-.768.64L8 10.781l-2.116 2.54a.5.5 0 0 1-.768-.641L7.349 10 5.116 7.32a.5.5 0 1 1 .768-.64z"/></svg></Button>;
     
     const actionsMemo = useMemo(() => <Export onExport={() => downloadCSV(transactions)} />, []);
 
     useEffect(() => {
-      if(transactions !== null) getTransactions();
+      const timeout = setTimeout(() => {
+            getTransactions();
+			setRows(filteredItems);
+			setPending(false);
+		}, 2000);
+		return () => clearTimeout(timeout);
     }, []);
     
 
     return (
         <div>
-
             {loading && (<Loader />)}
             {error && (<Message variant='danger'>{error}</Message>)}
             <DataTable className='table-data'
                 title="Listado de Gastos/Ingresos"
                 columns={columns}
-                data={transactions}
+                data={filteredItems}
                 fixedHeader
-                fixedHeaderScrollHeight="300px"
-                pagination paginationComponentOptions={paginationComponentOptions}
+                fixedHeaderScrollHeight="250px"
+                pagination 
+                paginationComponentOptions={paginationComponentOptions}
                 conditionalRowStyles={conditionalRowStyles}
                 actions={actionsMemo}
+                progressPending={pending}
+                highlightOnHover
+		        pointerOnHover
+			    progressComponent={<Loader />}
+                subHeader
+			    subHeaderComponent={subHeaderComponentMemo}
+                persistTableHead
             />
         </div>
     );

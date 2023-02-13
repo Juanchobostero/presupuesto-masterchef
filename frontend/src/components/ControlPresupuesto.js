@@ -6,7 +6,7 @@ const ControlPresupuesto = ({ total }) => {
     return ( 
         <>
             <div className="alert alert-primary">
-                Total: {total}
+                Total Gastos: {total}
             </div>
 
             <div className={revisarPresupuesto(total)}>

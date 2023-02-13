@@ -15,13 +15,15 @@ const HomeScreen = () => {
   const diferencia = 0;
 
   const transContext = useContext(transactionContext);
-  const { getTransactions, getTransactionTypes, transactions, transactionTypes } = transContext;
+  const { getTransactions, getTransactionTypes, transactions, transactionTypes, total } = transContext;
 
   useEffect(() => {
     if(userInfo && userInfo.name) {
       getTransactionTypes();
       getTransactions();
     } else {
+      getTransactionTypes();
+      getTransactions();
       navigate('/login');
     }
   
@@ -29,17 +31,27 @@ const HomeScreen = () => {
 
   return (
     <div className="contenido-principal contenido">
-        <div className="row">
+        <div className="row mb-2">
           <div className="col-md-4 col-sm-6">
               <Formulario />
           </div>
           <div className="col-md-8 col-sm-6">
               <TableList data={transactions}/>
-              <ControlPresupuesto 
-                total={diferencia}
-              />
           </div>
         </div>
+        <div className='row'>
+            <div className="col-md-6 col-sm-12">
+              <ControlPresupuesto 
+                  total={total}
+              />
+            </div>
+            <div className="col-md-6 col-sm-12">
+              <ControlPresupuesto 
+                  total={total}
+              />
+            </div>
+          </div>
+        
     </div>
   )
 }
