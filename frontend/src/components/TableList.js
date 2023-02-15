@@ -179,7 +179,6 @@ const TableList = () => {
                     onFilter={e => setFilterText(e.target.value)} 
                     onClear={handleClear} 
                 />
-                
             );
         }, [filterText, resetPaginationToggle]);
 
