@@ -38,9 +38,9 @@ const TransactionState = props => {
 
     const initialState = {
         loading: false,
+        error: false,
         transactions: transactionsFromStorage,
         transactionTypes: transactionTypesFromStorage,
-        error: false,
         totals: totalsFromStorage
     }
 
@@ -138,6 +138,7 @@ const TransactionState = props => {
             };
     
             const { data } = await axiosClient.post('/api/transactions', transaction, config);
+
     
             dispatch({
                 type: ADD_TRANSACTION_SUCCESS,

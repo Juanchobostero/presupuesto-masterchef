@@ -18,8 +18,6 @@ const HomeScreen = () => {
     getTransactions, 
     getTransactionTypes, 
     transactions,
-    totals,
-    getTotals, 
     transactionTypes,
   } = transContext;
 
@@ -28,15 +26,13 @@ const HomeScreen = () => {
     if(userInfo && userInfo.name) {
       getTransactionTypes();
       getTransactions();
-      getTotals();
     } else {
       getTransactionTypes();
       getTransactions();
-      getTotals();
       navigate('/login');
     }
   
-  }, [transactions, transactionTypes, userInfo, totals, navigate]);
+  }, [transactions, transactionTypes, userInfo, navigate]);
 
   return (
     <div className="contenido-principal contenido">

@@ -3,25 +3,14 @@ import { transactionContext } from '../context/transaction/transactionContext';
 
 const ControlPresupuesto = () => {
 
-    const transContext = useContext(transactionContext);
-    const { 
-        totals,
-        getTotals
-    } = transContext;
-
-    useEffect(() => {
-      getTotals();
-    }, [])
-    
-
     return ( 
         <div className='row'>
             <div className="alert alert-success col-md-6">
-                Total Ingresos: {totals[0].total}
+                Total Ingresos: {0}
             </div>
             <br></br>
             <div className="alert alert-danger col-md-6" /*className={revisarPresupuesto(total)}> */>
-                Total Gastos: {totals[1].total}
+                Total Gastos: {0}
             </div>
 
         </div>

@@ -9,7 +9,7 @@ const Formulario = () => {
     const { alert } = alertsContext;
 
     const transContext = useContext(transactionContext);
-    const { transactionTypes, addTransaction, getTransactions } = transContext;
+    const { transactionTypes, addTransaction, getTransactions, getTransactionTypes } = transContext;
 
     const [descripcion, setDescripcion] = useState("");
     const [tipo, setTipo] = useState(0);
@@ -41,8 +41,14 @@ const Formulario = () => {
         setDescripcion("");
         setMonto(0);
 
+        getTransactionTypes();
         getTransactions();
     }
+
+    useEffect(() => {
+        getTransactionTypes();
+    }, [])
+    
     
 
     return(

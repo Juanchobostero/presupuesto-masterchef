@@ -1,4 +1,5 @@
 import asyncHandler from 'express-async-handler';
+import mongoose from 'mongoose';
 import Transaction from '../models/transactionModel.js';
 import TransactionType from '../models/transactionTypeModel.js';
 
@@ -23,11 +24,8 @@ const registerTransaction = asyncHandler( async (req, res) => {
 
 
     if(transaction) {
-        res.status(201).json({
-            description: transaction.description,
-            amount: transaction.amount,
-            transactionType: transaction.transactionType
-        });  
+        let trans = getTransaction(transaction._id);
+        res.status(201).json(trans);  
     } else {
         res.status(400);
         throw new Error('Invalid transaction data');
@@ -56,16 +54,6 @@ const getTransactions = asyncHandler( async (req, res) => {
         $set: {
            dateFormat: { $dateToString: { format: "%Y-%m-%d %H:%M:%S", date: "$createdAt" } }
         }
-      },
-      {
-        "$group": {
-          _id: "$transactionType",
-          "total": {
-            $sum: {
-              "$toDouble": "$amount"
-            }
-          }
-        }
       }
      ]).sort({ createdAt: -1 });
 
@@ -92,12 +80,48 @@ const getTotals = asyncHandler( async (req, res) => {
     res.json(totals);
 });
 
+// @desc Get transaction by ID
+// @route GET /api/transactions/:id
+// @access Private
+const getTransaction = id => {
+  const transaction = Transaction.aggregate([
+      { 
+       '$lookup': {
+       'from': TransactionType.collection.name,
+       'localField': 'transactionType',
+       'foreignField': '_id',
+       'as': 'type'
+       }
+      },
+     {
+       $set: {
+           type: { $arrayElemAt: ["$type.description", 0] }
+       }
+     },
+     {
+       $set: {
+          dateFormat: { $dateToString: { format: "%Y-%m-%d %H:%M:%S", date: "$createdAt" } }
+       }
+     },
+     {
+      $match: { "_id": mongoose.Types.ObjectId(id) }
+     }
+    ]);
+
+  if(transaction) {
+      res.json(transaction);
+  } else {
+      res.json(404);
+      throw new Error('Transaction not found !');
+  }
+};
+
 
 // @desc Get transaction by ID
 // @route GET /api/transactions/:id
 // @access Private
-const getTransactionById = asyncHandler( async (req, res, id) => {
-    const transaction = await Transaction.findById(id).aggregate([
+const getTransactionById = asyncHandler( async (req, res) => {
+    const transaction = await Transaction.aggregate([
         { 
          '$lookup': {
          'from': TransactionType.collection.name,
@@ -115,6 +139,9 @@ const getTransactionById = asyncHandler( async (req, res, id) => {
          $set: {
             dateFormat: { $dateToString: { format: "%Y-%m-%d %H:%M:%S", date: "$createdAt" } }
          }
+       },
+       {
+        $match: { "_id": mongoose.Types.ObjectId(req.params.id) }
        }
       ]);
 
