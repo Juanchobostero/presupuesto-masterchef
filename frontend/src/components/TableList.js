@@ -57,7 +57,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 const TableList = () => {
 
     const transContext = useContext(transactionContext);
-    const { transactions, getTransactions, getTotals, loading, error } = transContext;
+    const { transactions, getTransactions, getTransactionTypes, loading, error } = transContext;
 
     const [pending, setPending] = useState(true);
 	const [rows, setRows] = useState([]);
@@ -189,10 +189,10 @@ const TableList = () => {
 
     useEffect(() => {
       const timeout = setTimeout(() => {
+            getTransactionTypes();
             getTransactions();
 			setRows(filteredItems);
 			setPending(false);
-            console.log(transactions);
 		}, 1500);
 		return () => clearTimeout(timeout);
     }, []);

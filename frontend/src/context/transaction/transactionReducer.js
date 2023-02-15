@@ -36,20 +36,19 @@ export default (state, action) => {
         case ADD_TRANSACTION_REQUEST:
             return {
                 loading: true,
-                ...state
+                ...state,
+                
             }
         case ADD_TRANSACTION_SUCCESS:
             return {
-                ...state,
-                transactions: [action.payload, ...state.transactions],
-                totalBills: (action.payload.type === 'Gasto' ? state.totalBills + action.payload.amount : state.totalBills),
-                totalIncomes: (action.payload.type === 'Ingreso' ? state.totalIncomes + action.payload.amount : state.totalIncomes),
                 loading: false,
+                transactions: [action.payload, ...state.transactions],
+                ...state
             }
         case ADD_TRANSACTION_FAIL:
             return {
                 loading: false,
-                error: action.payload
+                error: action.payload,
             }
         case GET_TRANSACTION_TYPES_REQUEST:
             return {
