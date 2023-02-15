@@ -39,10 +39,10 @@ const HomeScreen = () => {
       
         <div className="row mb-2">
           <div className="col-md-4 col-sm-6">
-              <Formulario />
+              <Formulario transactionTypes={transactionTypes}/>
           </div>
           <div className="col-md-8 col-sm-6">
-              <TableList id="table-data" />
+              <TableList id="table-data" transactions={transactions}/>
           </div>
         </div>
         <div className='row'>

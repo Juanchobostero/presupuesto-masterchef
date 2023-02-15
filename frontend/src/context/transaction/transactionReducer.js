@@ -25,7 +25,7 @@ export default (state, action) => {
             return {
                 loading: false,
                 transactions: action.payload,
-                ...state  
+                ...state
             }
             
         case GET_TRANSACTIONS_FAIL:
@@ -37,13 +37,12 @@ export default (state, action) => {
             return {
                 loading: true,
                 ...state,
-                
             }
         case ADD_TRANSACTION_SUCCESS:
             return {
+                ...state,
                 loading: false,
-                transactions: [action.payload, ...state.transactions],
-                ...state
+                transactions: [...state.transactions, action.payload]
             }
         case ADD_TRANSACTION_FAIL:
             return {
@@ -69,19 +68,16 @@ export default (state, action) => {
         case GET_TOTALS_REQUEST:
             return {
                 loading: true,
-                ...state,
             }
         case GET_TOTALS_SUCCESS:
             return {
                 loading: false,
                 totals: action.payload,
-                ...state
             }
         case GET_TOTALS_FAIL:
             return {
                 loading: false,
                 error: action.payload,
-                ...state
             }
         default:
             return state;

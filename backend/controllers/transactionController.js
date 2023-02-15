@@ -24,7 +24,7 @@ const registerTransaction = asyncHandler( async (req, res) => {
 
 
     if(transaction) {
-        let trans = getTransaction(transaction._id);
+        const trans = await getTransaction(transaction._id);
         res.status(201).json(trans);  
     } else {
         res.status(400);
@@ -83,8 +83,8 @@ const getTotals = asyncHandler( async (req, res) => {
 // @desc Get transaction by ID
 // @route GET /api/transactions/:id
 // @access Private
-const getTransaction = id => {
-  const transaction = Transaction.aggregate([
+const getTransaction = async (req, res, id) => {
+  const transaction = await Transaction.aggregate([
       { 
        '$lookup': {
        'from': TransactionType.collection.name,
@@ -108,12 +108,7 @@ const getTransaction = id => {
      }
     ]);
 
-  if(transaction) {
-      res.json(transaction);
-  } else {
-      res.json(404);
-      throw new Error('Transaction not found !');
-  }
+  return await transaction;
 };
 
 

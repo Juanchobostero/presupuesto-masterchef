@@ -3,13 +3,13 @@ import Swal from 'sweetalert2';
 import alertContext from '../context/alerts/alertContext';
 import { transactionContext } from '../context/transaction/transactionContext';
 
-const Formulario = () => {
+const Formulario = ({ transactionTypes }) => {
 
     const alertsContext = useContext(alertContext);
     const { alert } = alertsContext;
 
     const transContext = useContext(transactionContext);
-    const { transactionTypes, addTransaction, getTransactions, getTransactionTypes } = transContext;
+    const { addTransaction, getTransactions } = transContext;
 
     const [descripcion, setDescripcion] = useState("");
     const [tipo, setTipo] = useState(0);
@@ -41,13 +41,9 @@ const Formulario = () => {
         setDescripcion("");
         setMonto(0);
 
-        getTransactionTypes();
         getTransactions();
     }
 
-    useEffect(() => {
-        getTransactionTypes();
-    }, [])
     
     
 

@@ -54,10 +54,10 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
     </>
 );
 
-const TableList = () => {
+const TableList = ({ transactions }) => {
 
     const transContext = useContext(transactionContext);
-    const { transactions, getTransactions, getTransactionTypes, loading, error } = transContext;
+    const { getTransactions, loading, error } = transContext;
 
     const [pending, setPending] = useState(true);
 	const [rows, setRows] = useState([]);
@@ -187,13 +187,8 @@ const TableList = () => {
     const actionsMemo = useMemo(() => <Export onExport={() => downloadCSV(transactions)} />, []);
 
     useEffect(() => {
-      const timeout = setTimeout(() => {
-            getTransactionTypes();
-            getTransactions();
-			setRows(filteredItems);
-			setPending(false);
-		}, 1500);
-		return () => clearTimeout(timeout);
+        getTransactions();
+        setRows(filteredItems);
     }, []);
     
 
@@ -212,7 +207,6 @@ const TableList = () => {
                 paginationComponentOptions={paginationComponentOptions}
                 conditionalRowStyles={conditionalRowStyles}
                 actions={actionsMemo}
-                progressPending={pending}
                 highlightOnHover
 		        pointerOnHover
 			    progressComponent={<Loader />}
