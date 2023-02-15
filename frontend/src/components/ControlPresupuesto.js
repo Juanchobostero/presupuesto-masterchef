@@ -1,25 +1,27 @@
-import React, { useContext } from 'react';
-import { revisarPresupuesto } from "../helpers";
-import PropTypes from "prop-types";
+import React, { useContext, useEffect } from 'react';
 import { transactionContext } from '../context/transaction/transactionContext';
 
 const ControlPresupuesto = () => {
 
     const transContext = useContext(transactionContext);
     const { 
-        totalBills,
-        totalIncomes,
-        totalDiff
+        totals,
+        getTotals
     } = transContext;
+
+    useEffect(() => {
+      getTotals();
+    }, [])
+    
 
     return ( 
         <div className='row'>
             <div className="alert alert-success col-md-6">
-                Total Ingresos: {totalBills}
+                Total Ingresos: {totals[0].total}
             </div>
             <br></br>
             <div className="alert alert-danger col-md-6" /*className={revisarPresupuesto(total)}> */>
-                Total Gastos: {totalIncomes}
+                Total Gastos: {totals[1].total}
             </div>
 
         </div>

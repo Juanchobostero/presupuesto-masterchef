@@ -42,12 +42,13 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
         <TextField
             type="text"
             autoFocus="autoFocus"
+            className="searching"
             placeholder="Buscar por nombre"
             aria-label="Search Input"
             value={filterText}
             onChange={onFilter}
         />
-        <ClearButton type="button" onClick={onClear}>
+        <ClearButton type="button" className="searching-btn" onClick={onClear}>
             X
         </ClearButton>
     </>
@@ -56,7 +57,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 const TableList = () => {
 
     const transContext = useContext(transactionContext);
-    const { transactions, getTransactions, loading, error } = transContext;
+    const { transactions, getTransactions, getTotals, loading, error } = transContext;
 
     const [pending, setPending] = useState(true);
 	const [rows, setRows] = useState([]);
@@ -191,7 +192,8 @@ const TableList = () => {
             getTransactions();
 			setRows(filteredItems);
 			setPending(false);
-		}, 2000);
+            console.log(transactions);
+		}, 1500);
 		return () => clearTimeout(timeout);
     }, []);
     
@@ -200,7 +202,8 @@ const TableList = () => {
         <div>
             {loading && (<Loader />)}
             {error && (<Message variant='danger'>{error}</Message>)}
-            <DataTable className='table-data'
+            <DataTable 
+                className='table-data' 
                 title="Listado de Gastos/Ingresos"
                 columns={columns}
                 data={filteredItems}

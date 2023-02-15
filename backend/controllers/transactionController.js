@@ -56,10 +56,40 @@ const getTransactions = asyncHandler( async (req, res) => {
         $set: {
            dateFormat: { $dateToString: { format: "%Y-%m-%d %H:%M:%S", date: "$createdAt" } }
         }
+      },
+      {
+        "$group": {
+          _id: "$transactionType",
+          "total": {
+            $sum: {
+              "$toDouble": "$amount"
+            }
+          }
+        }
       }
      ]).sort({ createdAt: -1 });
 
     res.json(transactions);
+});
+
+// @desc Get transaction total amount group by transactionType
+// @route GET /api/transactions/totals
+// @access Private
+const getTotals = asyncHandler( async (req, res) => {
+    const totals = await Transaction.aggregate([
+      {
+        "$group": {
+          _id: "$transactionType",
+          "total": {
+            $sum: {
+              "$toDouble": "$amount"
+            }
+          }
+        }
+      }
+     ]);
+
+    res.json(totals);
 });
 
 
@@ -99,5 +129,6 @@ const getTransactionById = asyncHandler( async (req, res, id) => {
 export { 
     registerTransaction, 
     getTransactions,
-    getTransactionById
+    getTransactionById,
+    getTotals
 };

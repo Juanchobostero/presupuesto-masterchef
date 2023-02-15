@@ -6,13 +6,15 @@ import {
     GET_TRANSACTIONS_REQUEST, 
     GET_TRANSACTIONS_SUCCESS,
     GET_TRANSACTIONS_FAIL,
-
     ADD_TRANSACTION_REQUEST,
     ADD_TRANSACTION_SUCCESS,
     ADD_TRANSACTION_FAIL, 
     GET_TRANSACTION_TYPES_REQUEST,
     GET_TRANSACTION_TYPES_SUCCESS,
-    GET_TRANSACTION_TYPES_FAIL
+    GET_TRANSACTION_TYPES_FAIL,
+    GET_TOTALS_REQUEST,
+    GET_TOTALS_SUCCESS,
+    GET_TOTALS_FAIL
 } from "../../types";
 import axiosClient from "../../config/axios.js";
 
@@ -30,14 +32,16 @@ const TransactionState = props => {
     ? JSON.parse(localStorage.getItem('userInfo')) 
     : {};
 
+    const totalsFromStorage = localStorage.getItem('totals') 
+    ? JSON.parse(localStorage.getItem('totals')) 
+    : [];
+
     const initialState = {
         loading: false,
         transactions: transactionsFromStorage,
         transactionTypes: transactionTypesFromStorage,
         error: false,
-        totalBills: 0,
-        totalIncomes: 0,
-        totalDiff: 0
+        totals: totalsFromStorage
     }
 
     const [state, dispatch] = useReducer(transactionReducer, initialState);
@@ -62,6 +66,32 @@ const TransactionState = props => {
         } catch (error) {
             dispatch({
                 type: GET_TRANSACTIONS_FAIL,
+                payload: error.response && error.response.data.message 
+                    ? error.response.data.message 
+                    : error.message
+            })
+        }
+    };
+
+    const getTotals = async () => {
+        try {
+            dispatch({
+                type: GET_TOTALS_REQUEST
+            });
+            
+            const { data } = await axiosClient.get('/api/transactions/totals');
+    
+            // Get transactions
+            dispatch({
+                type: GET_TOTALS_SUCCESS,
+                payload: data
+            });
+
+            localStorage.setItem('totals', JSON.stringify(data));
+
+        } catch (error) {
+            dispatch({
+                type: GET_TOTALS_FAIL,
                 payload: error.response && error.response.data.message 
                     ? error.response.data.message 
                     : error.message
@@ -132,13 +162,11 @@ const TransactionState = props => {
                 transactions: state.transactions,
                 transactionTypes: state.transactionTypes,
                 error: state.error,
-                total: state.total,
-                totalBills: state.totalBills,
-                totalIncomes: state.totalIncomes,
-                totalDiff: state.totalDiff,
+                totals: state.totals,
                 getTransactions,
                 getTransactionTypes,
-                addTransaction
+                addTransaction,
+                getTotals
             }}
         >
             {props.children}

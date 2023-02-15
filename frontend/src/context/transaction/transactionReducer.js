@@ -7,7 +7,10 @@ import {
     GET_TRANSACTION_TYPES_FAIL,
     ADD_TRANSACTION_REQUEST,
     ADD_TRANSACTION_SUCCESS,
-    ADD_TRANSACTION_FAIL
+    ADD_TRANSACTION_FAIL,
+    GET_TOTALS_REQUEST,
+    GET_TOTALS_SUCCESS,
+    GET_TOTALS_FAIL
 } from "../../types";
 
 // eslint-disable-next-line
@@ -63,6 +66,23 @@ export default (state, action) => {
             return {
                 loading: false,
                 error: action.payload
+            }
+        case GET_TOTALS_REQUEST:
+            return {
+                loading: true,
+                ...state,
+            }
+        case GET_TOTALS_SUCCESS:
+            return {
+                loading: false,
+                totals: action.payload,
+                ...state
+            }
+        case GET_TOTALS_FAIL:
+            return {
+                loading: false,
+                error: action.payload,
+                ...state
             }
         default:
             return state;

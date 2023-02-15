@@ -18,4 +18,8 @@ export const USER_LOGOUT = 'USER_LOGOUT';
 export const SHOW_ALERT = 'SHOW_ALERT';
 export const HIDE_ALERT = 'HIDE_ALERT';
 
+export const GET_TOTALS_REQUEST = 'GET_TOTALS_REQUEST';
+export const GET_TOTALS_SUCCESS = 'GET_TOTALS_SUCCESS';
+export const GET_TOTALS_FAIL = 'GET_TOTALS_FAIL';
+
 
